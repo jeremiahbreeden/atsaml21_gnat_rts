@@ -277,7 +277,7 @@ private
    type Interrupt_Vector_Table is array (1 .. 44) of Interrupt_Vector_Address;
    pragma Suppress_Initialization (Interrupt_Vector_Table);
 
-   -- Import from System.Startup
+   --  Import from System.Startup
    procedure Reset_Handler
    with
       Convention => C,
