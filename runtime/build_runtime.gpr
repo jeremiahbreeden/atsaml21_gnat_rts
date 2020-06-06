@@ -12,8 +12,8 @@ project Build_Runtime is
 
    for Target use "arm-eabi";
 
-   type Build_Type is ("Production", "Debug");
-   Build : Build_Type := external ("BUILD", "Production");
+   type Build_Type is ("release", "debug");
+   Build : Build_Type := external ("BUILD", "release");
 
    package Builder is
       for Switches ("Ada") use ("--RTS=" & Project'project_dir);
@@ -27,9 +27,9 @@ project Build_Runtime is
       CFLAGS := ("-fcallgraph-info=da",
                  "-ffunction-sections", "-fdata-sections");
       case Build is
-        when "Production" =>
+        when "release" =>
            CFLAGS := CFLAGS & ("-O3");
-        when "Debug" =>
+        when "debug" =>
            CFLAGS := CFLAGS & ("-O0", "-g");
       end case;
       ALL_ADAFLAGS := ("-gnatpgn", "-nostdinc") & CFLAGS;
