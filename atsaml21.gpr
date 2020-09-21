@@ -1,0 +1,68 @@
+project ATSAML21 is
+
+   for Languages use ("Ada");
+   for Source_Dirs use ("src/**");
+   for Object_Dir use "obj";
+   type Build_Modes is
+      ("debug", "release");
+   Build_Mode : Build_Modes := external ("BUILD", "release");
+
+   for Target use "arm-eabi";
+
+   for Runtime ("Ada") use Project'project_dir & "runtime";
+
+   package Compiler is
+
+      case Build_Mode is
+
+         when "debug" =>
+            for Default_Switches ("ada") use ("-O0", "-gnatwa.X", "-gnatQ", "-gnat12", "-g");
+
+         when "release" =>
+            for Default_Switches ("ada") use ("-O2", "-gnatQ", "-gnatw.X", "-gnat12", "-gnatn", "-ffunction-sections", "-fdata-sections");
+      end case;
+      
+   end Compiler;
+
+   package Builder is
+
+      case Build_Mode is
+
+         when "debug" =>
+            for Default_Switches ("ada") use ("-g");
+
+         when "release" =>
+            for Default_Switches ("ada") use ("");
+
+      end case;
+
+   end Builder;
+
+   package Linker is
+
+      case Build_Mode is
+
+         when "debug" =>
+            for Default_Switches ("ada") use ("-Wl,--gc-sections", "-g");
+
+         when "release" =>
+            for Default_Switches ("ada") use ("-g", "-Wl,--gc-sections");
+      end case;
+
+   end Linker;
+
+   package Check is
+
+      case Build_Mode is
+
+         when "debug" =>
+            for Default_Switches ("ada") use ("-d");
+
+         when "release" =>
+
+      end case;
+
+   end Check;
+
+end ATSAML21;
+
